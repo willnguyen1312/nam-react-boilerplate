@@ -1,12 +1,60 @@
 import * as React from "react";
-import { render } from "react-dom";
-import App from "./App";
-import registerServiceWorker from "./registerServiceWorker";
+import * as ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import "sanitize.css/sanitize.css";
 
-render(<App />, document.getElementById("root") as HTMLElement);
+import App from "./App";
+import "./global-styles";
+import { translationMessages } from "./i18n";
+import registerServiceWorker from "./registerServiceWorker";
+import configureStore from "./store";
+
+import LanguageProvider from "./views/LanguageProvider";
+
+// Create redux store with history
+const initialState = {};
+// const history = createHistory();
+const store = configureStore(initialState);
+const MOUNT_NODE = document.getElementById("root") as HTMLElement;
+
+const render = (messages: any) => {
+  ReactDOM.render(
+    <Provider store={store}>
+      <LanguageProvider messages={messages}>
+        <App />
+      </LanguageProvider>
+    </Provider>,
+    MOUNT_NODE
+  );
+};
 
 if (module.hot) {
-  module.hot.accept();
+  // Hot reloadable React components and translation json files
+  // modules.hot.accept does not accept dynamic dependencies,
+  // have to be constants at compile-time
+  module.hot.accept(["./i18n", "./App"], () => {
+    ReactDOM.unmountComponentAtNode(MOUNT_NODE);
+    render(translationMessages);
+  });
+}
+
+// Chunked polyfill for browsers without Intl support
+if (!(window as any).Intl) {
+  new Promise(resolve => {
+    resolve(import("intl"));
+  })
+    .then(() =>
+      Promise.all([
+        require("intl/locale-data/jsonp/en.js"),
+        require("intl/locale-data/jsonp/vi.js")
+      ])
+    )
+    .then(() => render(translationMessages))
+    .catch(err => {
+      throw err;
+    });
+} else {
+  render(translationMessages);
 }
 
 registerServiceWorker();
