@@ -6,14 +6,10 @@ import "sanitize.css/sanitize.css";
 import "./global-styles";
 import { translationMessages } from "./i18n";
 import registerServiceWorker from "./registerServiceWorker";
-import Routes from "./routes";
-import configureStore from "./store";
+import Routes, { store } from "./routes";
 import LanguageProvider from "./views/LanguageProvider";
 
-// Create redux store with history
-const initialState = {};
 // const history = createHistory();
-const store = configureStore(initialState);
 const MOUNT_NODE = document.getElementById("root") as HTMLElement;
 
 const render = (messages: any) => {

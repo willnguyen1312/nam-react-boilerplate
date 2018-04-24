@@ -1,3 +1,4 @@
+import { routerReducer } from "react-router-redux";
 import { combineReducers } from "redux";
 
 import languageProviderReducer from "../views/LanguageProvider/reducer";
@@ -14,6 +15,7 @@ export default function createReducer(injectedReducers: any = {}) {
   return combineReducers({
     ...injectedReducers,
     // global: globalReducer,
-    language: languageProviderReducer
+    language: languageProviderReducer,
+    routing: routerReducer
   });
 }
