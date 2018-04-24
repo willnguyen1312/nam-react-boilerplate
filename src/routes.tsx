@@ -21,6 +21,11 @@ const AsyncAppComponent = Loadable({
   loading: LoadingComponent
 });
 
+const AsyncHomeComponent = Loadable({
+  loader: () => import("./views/HomePage"),
+  loading: LoadingComponent
+});
+
 export default class Routes extends React.Component {
   render() {
     return (
@@ -28,7 +33,8 @@ export default class Routes extends React.Component {
         <Router history={history}>
           <Switch>
             <Route exact={true} path="/" component={AsyncAppComponent} />
-            <Route path="" component={NotFoundPage} />
+            <Route path="/home" component={AsyncHomeComponent} />
+            <Route component={NotFoundPage} />
           </Switch>
         </Router>
       </RebassProvider>

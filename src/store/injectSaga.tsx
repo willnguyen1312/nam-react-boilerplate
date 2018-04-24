@@ -11,7 +11,7 @@ export default ({
 }: {
   key: string;
   saga: any;
-  mode: string;
+  mode?: string;
 }) => (WrappedComponent: any) => {
   class InjectSaga extends React.Component {
     static WrappedComponent = WrappedComponent;

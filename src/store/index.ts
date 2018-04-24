@@ -47,11 +47,11 @@ export default function configureStore(initialState = {}) {
 
   // Make reducers hot reloadable, see http://mxs.is/googmo
   /* istanbul ignore next */
-  if (module.hot) {
-    module.hot.accept("../reducers", () => {
-      store.replaceReducer(createReducer((store as any).injectedReducers));
-    });
-  }
+  // if (module.hot) {
+  //   module.hot.accept("../reducers", () => {
+  //     store.replaceReducer(createReducer((store as any).injectedReducers));
+  //   });
+  // }
 
   return store;
 }
